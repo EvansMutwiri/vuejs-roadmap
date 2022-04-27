@@ -12,20 +12,20 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity';
+import { ref, reactive } from '@vue/reactivity';
 export default {
     setup() {
         let first = ref('Evans');
         let last = ref('Mutwiri');
 
-        let details = ref({
+        let details = reactive({
             contact: '0722000000',
             address: 'Nairobi'
         });
 
         setTimeout(() => {
-            details.value.address = 'Meru',
-            details.value.contact = '0721212121'
+            details.address = 'Meru',
+            details.contact = '0721212121'
         }, 4000)
 
         return {
