@@ -3,6 +3,13 @@
         <h1>PortFolio</h1>
         <h2>First Name: {{ firstName }}</h2>
         <h2>Last Name: {{ lastName }}</h2>
+
+        <h3>Fullname: {{ fullName }}</h3>
+
+        <div class="form">
+            <input type="text" placeholder="First Name" @input="changeFirstName">
+            <input type="text" placeholder="Last Name" @input="changeLastName">
+        </div>
         <hr>
         <div>
             <p>Contacts: {{ details.contact }}</p>
@@ -14,15 +21,15 @@
 </template>
 
 <script>
-import { ref, reactive } from '@vue/reactivity';
+import { ref, reactive} from '@vue/reactivity';
+
+// import computed
+import { computed } from '@vue/runtime-core';
 export default {
     setup() {
 
-        // use case: ref for strings and numbers
-        let first = ref('Evans');
-        let last = ref('Mutwiri');
-
-        // use case: reactive for objects
+        let first = ref(' ');
+        let last = ref(' ');
         let details = reactive({
             contact: '0722000000',
             address: 'Nairobi'
@@ -33,11 +40,27 @@ export default {
             details.address = 'Uganda'
         }
 
+        // 2 way binding
+        let changeFirstName = (event) => {
+            first.value = event.target.value;
+        }
+
+        let changeLastName = (event) => {
+            last.value = event.target.value;
+        }
+
+        const fullName = computed(() => {
+            return first.value + ' ' + last.value;
+        })
+
         return {
             firstName: first,
             lastName: last,
             details: details,
-            changeDetails
+            changeDetails,
+            changeFirstName,
+            changeLastName,
+            fullName
         }
     }
 }
@@ -70,9 +93,17 @@ h2 {
 }
 button {
     color: #fbfbfb;
-    background: rgb(67, 132, 223);
+    background: #4384df;
     border: none;
     border-radius: 4px;
     padding: 10px;
+}
+.form {
+    input {
+        margin: 5px;
+        border: #4384df 1px solid;
+        padding: 10px;
+        border-radius: 4px;
+    }
 }
 </style>
