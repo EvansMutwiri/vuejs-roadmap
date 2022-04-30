@@ -7,8 +7,8 @@
         <h3>Fullname: {{ fullName }}</h3>
 
         <div class="form">
-            <input type="text" placeholder="First Name" @input="changeFirstName">
-            <input type="text" placeholder="Last Name" @input="changeLastName">
+            <input type="text" placeholder="First Name" v-model="first">
+            <input type="text" placeholder="Last Name" v-model="last">
         </div>
         <hr>
         <div>
@@ -41,13 +41,13 @@ export default {
         }
 
         // 2 way binding
-        let changeFirstName = (event) => {
-            first.value = event.target.value;
-        }
+        // let changeFirstName = (event) => {
+        //     first.value = event.target.value;
+        // }
 
-        let changeLastName = (event) => {
-            last.value = event.target.value;
-        }
+        // let changeLastName = (event) => {
+        //     last.value = event.target.value;
+        // }
 
         const fullName = computed(() => {
             return first.value + ' ' + last.value;
@@ -58,8 +58,8 @@ export default {
             lastName: last,
             details: details,
             changeDetails,
-            changeFirstName,
-            changeLastName,
+            first,
+            last,
             fullName
         }
     }
