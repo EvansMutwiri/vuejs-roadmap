@@ -1,32 +1,36 @@
 <template>
     <div class="container">
-        <h1>Resume Maker</h1>
-        <h2>First Name: {{ firstName }}</h2>
-        <h2>Last Name: {{ lastName }}</h2>
+        <div class="header">
+            <h1>Resume Maker</h1>
 
-        <h3>Fullname: {{ fullName }}</h3>
+        </div>
 
-        <div class="form">
+        <button class="cancel" v-if="editing" @click="edit(false)">Cancel</button> <button class="save" v-else @click="edit(true)"> Edit </button>
+        
+        <div :class="['details']">
+            <h2>First Name: {{ firstName }}</h2>
+            <h2>Last Name: {{ lastName }}</h2>
+
+            <h3>Fullname: {{ fullName }}</h3>
+        </div>
+
+        <form :class="['form']" v-if="editing">
             <input type="text" placeholder="First Name" v-model="first">
             <input type="text" placeholder="Last Name" v-model="last">
-        </div>
+        </form>
         <hr>
-        <div>
-            <p>Contacts: {{ details.contact }}</p>
-            <p>Location: {{ details.address }}</p>
-        </div>
-
-        <button @click="changeDetails">Change Details</button>
 
         <div class="languages">
             <h1>My stack</h1>
             <ul>
                 <li v-for="{id, label} in languages" :key="id"> {{ label }}</li>
             </ul>
+            <p v-if="!languages.length">No languages added</p>
         </div>
 
         <form
-            @submit.prevent="languages.push({id: languages.length + 1, label: newItem })"
+            v-if="editing"
+            @submit.prevent="addLang"
         >
             <input 
                 type="text" 
@@ -34,7 +38,7 @@
                 placeholder="Add new language"
             >
 
-        <button>Save</button>
+        <button v-bind:disabled="newItem.length === 0">Save</button>
 
         </form>
     </div>
@@ -48,48 +52,48 @@ import { computed } from '@vue/runtime-core';
 export default {
     setup() {
 
-        let first = ref(' ');
-        let last = ref(' ');
-        let details = reactive({
-            contact: '0722000000',
-            address: 'Nairobi'
-        });
-
-        let changeDetails = () => {
-            details.contact = '+256565625',
-            details.address = 'Uganda'
-        }
-
-        // 2 way binding
-        // let changeFirstName = (event) => {
-        //     first.value = event.target.value;
-        // }
-
-        // let changeLastName = (event) => {
-        //     last.value = event.target.value;
-        // }
+        let first = ref('');
+        let last = ref('');
+        // let details = reactive({
+        //     contact: '0722000000',
+        //     address: 'Nairobi'
+        // });
 
         const fullName = computed(() => {
             return first.value + ' ' + last.value;
         })
 
         let languages = ref([
-           {id: 1, label: "Javascript"},
-           {id: 2, label: "CSS"},
-           {id: 3, label: "html5"},
+        //    {id: 1, label: "Javascript"},
+        //    {id: 2, label: "CSS"},
+        //    {id: 3, label: "html5"},
         ]);
 
-        let newItem = ref(" ");
+        let newItem = ref("");
+
+        let addLang = () => {
+            languages.value.push({id: languages.value.length + 1, label: newItem.value });
+            newItem.value = ""
+        }
+
+        let editing = ref(false);
+
+        let edit = (e)=> {
+            editing.value = e;
+            newItem.value = ""
+        }
 
         return {
             firstName: first,
             lastName: last,
-            details: details,
-            changeDetails,
             first,
             last,
             fullName,
-            languages
+            languages,
+            newItem,
+            addLang,
+            editing,
+            edit
         }
     }
 }
@@ -103,6 +107,10 @@ body {
     align-items: center;
 }
 
+.header {
+    display: inline-flex;
+}
+
 .container {
     border: 1px none;
     padding: 6em;
@@ -110,6 +118,13 @@ body {
     background: linear-gradient(#d2cdc3, #e3d4b4);
     box-shadow: 2px 2px 0 0 #938f88;
     margin-top: 10%;
+}
+
+.details {
+    background: #f1ece1;
+    padding: 1%;
+    margin: 1%;
+    border-radius: 4px;
 }
 
 h1 {
@@ -124,8 +139,22 @@ button {
     color: #fbfbfb;
     background: #4384df;
     border: none;
+    width: 10em;
     border-radius: 4px;
     padding: 10px;
+}
+
+.cancel {
+    color: #fbfbfb;
+    background: #df435a;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+}
+
+.save {
+    width: 100%;
 }
 input {
     margin: 5px;
