@@ -25,17 +25,18 @@
             </ul>
         </div>
 
-        <input 
-            type="text" 
-            v-model="newItem" 
-            v-on:keyup.enter="languages.push({id: languages.length + 1, label: newItem })" 
-            placeholder="Add new language"
+        <form
+            @submit.prevent="languages.push({id: languages.length + 1, label: newItem })"
         >
+            <input 
+                type="text" 
+                v-model="newItem"
+                placeholder="Add new language"
+            >
 
-        <button 
-            v-on:click="languages.push({id: languages.length + 1, label: newItem })">
-            Save
-        </button>
+        <button>Save</button>
+
+        </form>
     </div>
 </template>
 
