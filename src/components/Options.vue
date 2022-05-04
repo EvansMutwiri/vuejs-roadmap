@@ -49,7 +49,7 @@
             <p v-if="qualifications.length < 2 && editing">press enter to add value</p>
             
             <ul>
-                <li v-for="{id, label, completedStatus} in qualifications" :key="id" :class="[completedStatus ? 'completed': '']"> {{ label }}</li>
+                <li v-for="{id, label, completedStatus} in reversedItems" :key="id" :class="[completedStatus ? 'completed': '']"> {{ label }}</li>
             </ul>
             <p v-if="!qualifications.length">No qualification added</p>
         </div>
@@ -125,6 +125,10 @@ export default {
             completedStatus.value="";
         }
 
+        const reversedItems = computed(() => {
+            return [...qualifications.value].reverse()
+        });
+
         return {
             firstName: first,
             lastName: last,
@@ -139,7 +143,8 @@ export default {
             qualifications,
             newEdu,
             addEdu,
-            completedStatus
+            completedStatus,
+            reversedItems
         }
     }
 }
