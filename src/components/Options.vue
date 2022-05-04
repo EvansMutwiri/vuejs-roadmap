@@ -21,14 +21,21 @@
         <div class="languages">
             <h1>My stack</h1>
             <ul>
-                <!-- <li v-for="lang in languages" :key="id"> {{ lang.label }}</li> -->
-                <!-- <li v-for="lang in languages" :key="lang.id"> {{ lang.label }}</li> -->
-                <!-- <li v-for="{id, label} in languages" :key="id"> {{ label }}</li> -->
-                <!-- <li v-for="({id, label}, index) in languages" :key="id"> {{ index }} {{ label }}</li> -->
-                <li v-for="({id, label}, index) in languages" :key="id"> {{ index }} {{ label }}</li>
-
+                <li v-for="{id, label} in languages" :key="id"> {{ label }}</li>
             </ul>
         </div>
+
+        <input 
+            type="text" 
+            v-model="newItem" 
+            v-on:keyup.enter="languages.push({id: languages.length + 1, label: newItem })" 
+            placeholder="Add new language"
+        >
+
+        <button 
+            v-on:click="languages.push({id: languages.length + 1, label: newItem })">
+            Save
+        </button>
     </div>
 </template>
 
@@ -65,14 +72,13 @@ export default {
             return first.value + ' ' + last.value;
         })
 
-        let languages = ref({
-           1: {id: 1, label: "Vue.js"},
-           2: {id: 2, label: "Tailwind"},
-           3: {id: 3, label: "Javascript"},
-           4: {id: 4, label: "CSS"},
-           5: {id: 5, label: "html5"},
-           6: {id: 6, label:"Bootstrap"}
-        });
+        let languages = ref([
+           {id: 1, label: "Javascript"},
+           {id: 2, label: "CSS"},
+           {id: 3, label: "html5"},
+        ]);
+
+        let newItem = ref(" ");
 
         return {
             firstName: first,
@@ -120,13 +126,11 @@ button {
     border-radius: 4px;
     padding: 10px;
 }
-.form {
-    input {
-        margin: 5px;
-        border: #4384df 1px solid;
-        padding: 10px;
-        border-radius: 4px;
-    }
+input {
+    margin: 5px;
+    border: #4384df 1px solid;
+    padding: 10px;
+    border-radius: 4px;
 }
 
 ul {
