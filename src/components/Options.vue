@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="header">
-            <h1>Resume Maker</h1>
+            <h1>Eazy Bio</h1>
 
         </div>
 
@@ -41,6 +41,36 @@
         <button v-bind:disabled="newItem.length === 0">Save</button>
 
         </form>
+
+        <div class="languages">
+
+            <h1>My Education</h1>
+
+            <p v-if="qualifications.length < 2 && editing">press enter to add value</p>
+            
+            <ul>
+                <li v-for="{id, label, completedStatus} in qualifications" :key="id" :class="[completedStatus ? 'completed': '']"> {{ label }}</li>
+            </ul>
+            <p v-if="!qualifications.length">No qualification added</p>
+        </div>
+
+        <form
+            v-if="editing"
+            @submit.prevent="addEdu"
+        >
+            <input 
+                type="text" 
+                v-model="newEdu"
+                placeholder="Add qualification"
+            >
+
+            <label>
+                <input type="checkbox" v-model="completedStatus">Completed
+            </label>
+
+        <button v-bind:disabled="newEdu.length === 0">Save</button>
+
+        </form>
     </div>
 </template>
 
@@ -63,24 +93,36 @@ export default {
             return first.value + ' ' + last.value;
         })
 
-        let languages = ref([
-        //    {id: 1, label: "Javascript"},
-        //    {id: 2, label: "CSS"},
-        //    {id: 3, label: "html5"},
+        let languages = ref([]);
+
+        let qualifications = ref([
+            
         ]);
+
 
         let newItem = ref("");
 
+        let newEdu = ref("");
+        let completedStatus = ref(false)
+
         let addLang = () => {
             languages.value.push({id: languages.value.length + 1, label: newItem.value });
-            newItem.value = ""
+            newItem.value = "";
+        }
+
+        let addEdu = () => {
+            qualifications.value.push({id: qualifications.value.length + 1, label: newEdu.value, completedStatus: completedStatus.value });
+            newEdu.value = "";
+            completedStatus.value = "";
         }
 
         let editing = ref(false);
 
         let edit = (e)=> {
             editing.value = e;
-            newItem.value = ""
+            newItem.value = "";
+            newEdu.value = "";
+            completedStatus.value="";
         }
 
         return {
@@ -93,7 +135,11 @@ export default {
             newItem,
             addLang,
             editing,
-            edit
+            edit,
+            qualifications,
+            newEdu,
+            addEdu,
+            completedStatus
         }
     }
 }
@@ -175,5 +221,9 @@ ul {
     h1 {
         color: black;
     }
+}
+
+.completed {
+    color: green;
 }
 </style>
