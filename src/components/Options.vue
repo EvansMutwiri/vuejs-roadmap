@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1>PortFolio</h1>
+        <h1>Resume Maker</h1>
         <h2>First Name: {{ firstName }}</h2>
         <h2>Last Name: {{ lastName }}</h2>
 
@@ -17,6 +17,18 @@
         </div>
 
         <button @click="changeDetails">Change Details</button>
+
+        <div class="languages">
+            <h1>My stack</h1>
+            <ul>
+                <!-- <li v-for="lang in languages" :key="id"> {{ lang.label }}</li> -->
+                <!-- <li v-for="lang in languages" :key="lang.id"> {{ lang.label }}</li> -->
+                <!-- <li v-for="{id, label} in languages" :key="id"> {{ label }}</li> -->
+                <!-- <li v-for="({id, label}, index) in languages" :key="id"> {{ index }} {{ label }}</li> -->
+                <li v-for="({id, label}, index) in languages" :key="id"> {{ index }} {{ label }}</li>
+
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -53,6 +65,15 @@ export default {
             return first.value + ' ' + last.value;
         })
 
+        let languages = ref({
+           1: {id: 1, label: "Vue.js"},
+           2: {id: 2, label: "Tailwind"},
+           3: {id: 3, label: "Javascript"},
+           4: {id: 4, label: "CSS"},
+           5: {id: 5, label: "html5"},
+           6: {id: 6, label:"Bootstrap"}
+        });
+
         return {
             firstName: first,
             lastName: last,
@@ -60,7 +81,8 @@ export default {
             changeDetails,
             first,
             last,
-            fullName
+            fullName,
+            languages
         }
     }
 }
@@ -104,6 +126,20 @@ button {
         border: #4384df 1px solid;
         padding: 10px;
         border-radius: 4px;
+    }
+}
+
+ul {
+    list-style: none;
+}
+
+.languages {
+    color: #ffffff;
+    font-weight: 800;
+    font-family: 'Courier New', Courier, monospace;
+    
+    h1 {
+        color: black;
     }
 }
 </style>
