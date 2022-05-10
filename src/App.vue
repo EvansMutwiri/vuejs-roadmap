@@ -1,16 +1,16 @@
 <template>
-  <MyComponentVue/>
+  <Options />
+
 </template>
 
 <script>
-import MyComponentVue from "./components/MyComponent.vue"
+import Options from "./components/Options.vue"
 export default {
   components: {
-      MyComponentVue
-    }
+    Options
+  }
 }
 </script>
 
 <style>
-
 </style>
