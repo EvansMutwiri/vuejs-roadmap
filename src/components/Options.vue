@@ -5,8 +5,9 @@
 
         </div>
 
-        <button class="cancel" v-if="editing" @click="edit(false)">Cancel</button> <button class="save" v-else @click="edit(true)"> Edit </button>
-        
+        <button class="cancel" v-if="editing" @click="edit(false)">Cancel</button> <button class="save" v-else
+            @click="edit(true)"> Edit </button>
+
         <div :class="['details']">
             <h2>First Name: {{ firstName }}</h2>
             <h2>Last Name: {{ lastName }}</h2>
@@ -23,22 +24,15 @@
         <div class="languages">
             <h1>My stack</h1>
             <ul>
-                <li v-for="{id, label} in languages" :key="id"> {{ label }}</li>
+                <li v-for="{ id, label } in languages" :key="id"> {{ label }}</li>
             </ul>
             <p v-if="!languages.length">No languages added</p>
         </div>
 
-        <form
-            v-if="editing"
-            @submit.prevent="addLang"
-        >
-            <input 
-                type="text" 
-                v-model="newItem"
-                placeholder="Add new language"
-            >
+        <form v-if="editing" @submit.prevent="addLang">
+            <input type="text" v-model="newItem" placeholder="Add new language">
 
-        <button v-bind:disabled="newItem.length === 0">Save</button>
+            <button v-bind:disabled="newItem.length === 0">Save</button>
 
         </form>
 
@@ -47,47 +41,39 @@
             <h1>My Education</h1>
 
             <p v-if="qualifications.length < 2 && editing">press enter to add value</p>
-            
+
             <ul>
-                <li v-for="{id, label, completedStatus} in reversedItems" :key="id" :class="[completedStatus ? 'completed': '']"> {{ label }}</li>
+                <li v-for="{ id, label, completedStatus } in reversedItems" :key="id"
+                    :class="[completedStatus ? 'completed' : '']"> {{ label }}</li>
             </ul>
             <p v-if="!qualifications.length">No qualification added</p>
         </div>
 
-        <form
-            v-if="editing"
-            @submit.prevent="addEdu"
-        >
-            <input 
-                type="text" 
-                v-model="newEdu"
-                placeholder="Add qualification"
-            >
+        <input type="text" ref="editRef">
+
+        <form v-if="editing" @submit.prevent="addEdu">
+            <input type="text" v-model="newEdu" placeholder="Add qualification">
 
             <label>
                 <input type="checkbox" v-model="completedStatus">Completed
             </label>
 
-        <button v-bind:disabled="newEdu.length === 0">Save</button>
+            <button v-bind:disabled="newEdu.length === 0">Save</button>
 
         </form>
     </div>
 </template>
 
 <script>
-import { ref, reactive} from '@vue/reactivity';
+import { ref, reactive } from '@vue/reactivity';
 
 // import computed
-import { computed } from '@vue/runtime-core';
+import { computed, onMounted } from '@vue/runtime-core';
 export default {
     setup() {
 
         let first = ref('');
         let last = ref('');
-        // let details = reactive({
-        //     contact: '0722000000',
-        //     address: 'Nairobi'
-        // });
 
         const fullName = computed(() => {
             return first.value + ' ' + last.value;
@@ -96,7 +82,7 @@ export default {
         let languages = ref([]);
 
         let qualifications = ref([
-            
+
         ]);
 
 
@@ -106,28 +92,34 @@ export default {
         let completedStatus = ref(false)
 
         let addLang = () => {
-            languages.value.push({id: languages.value.length + 1, label: newItem.value });
+            languages.value.push({ id: languages.value.length + 1, label: newItem.value });
             newItem.value = "";
         }
 
         let addEdu = () => {
-            qualifications.value.push({id: qualifications.value.length + 1, label: newEdu.value, completedStatus: completedStatus.value });
+            qualifications.value.push({ id: qualifications.value.length + 1, label: newEdu.value, completedStatus: completedStatus.value });
             newEdu.value = "";
             completedStatus.value = "";
         }
 
         let editing = ref(false);
 
-        let edit = (e)=> {
+        let edit = (e) => {
             editing.value = e;
             newItem.value = "";
             newEdu.value = "";
-            completedStatus.value="";
+            completedStatus.value = "";
         }
 
         const reversedItems = computed(() => {
             return [...qualifications.value].reverse()
         });
+
+        let editRef = ref(null);
+
+        onMounted(()=> {
+            editRef.value.focus()
+        })
 
         return {
             firstName: first,
@@ -144,7 +136,8 @@ export default {
             newEdu,
             addEdu,
             completedStatus,
-            reversedItems
+            reversedItems,
+            editRef
         }
     }
 }
@@ -156,6 +149,7 @@ body {
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .header {
@@ -183,9 +177,10 @@ h1 {
     font: 50px Georgia, serif 800;
 }
 
-h2 {
-    font: 20px Arial, sans-serif;
-}
+// h2 {
+//     font: 20px Arial, sans-serif;
+// }
+
 button {
     color: #fbfbfb;
     background: #4384df;
@@ -207,6 +202,7 @@ button {
 .save {
     width: 100%;
 }
+
 input {
     margin: 5px;
     border: #4384df 1px solid;
@@ -222,7 +218,7 @@ ul {
     color: #ffffff;
     font-weight: 800;
     font-family: 'Courier New', Courier, monospace;
-    
+
     h1 {
         color: black;
     }
